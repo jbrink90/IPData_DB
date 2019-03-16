@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: IPData-DB
+Version: 0.0.1
+Summary: A utility to lookup and store IPData.co IP address results.
+Home-page: https://github.com/TheConsciousness/IPData_DB
+Author: Jordan Brinkman
+Author-email: TheConsciousness@github.com
+License: UNKNOWN
+Description: ipdata_db allows a user to retrieve information about an IP address without the need to waste API credits.
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
