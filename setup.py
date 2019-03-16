@@ -4,14 +4,14 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="ipdata_db",
+    name="IPData_DB",
     version="0.0.1",
     author="Jordan Brinkman",
     author_email="TheConsciousness@github.com",
-    description="A utility to store IPData.co lookup results in a MongoDB database.",
-    long_description="",
+    description="A utility to lookup and store IPData.co IP address results.",
+    long_description="ipdata_db allows a user to retrieve information about an IP address without the need to waste API credits.",
     long_description_content_type="text/markdown",
-    url="https://github.com/pypa/sampleproject",
+    url="https://github.com/TheConsciousness/IPData_DB",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
