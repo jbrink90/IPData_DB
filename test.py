@@ -1,18 +1,11 @@
 #!/usr/bin/python3
 import ipdata_db
 
-our_config = ipdata_db.config()
-our_config.setup("127.0.0.1", 27017, "user", "pass", "SOMEKEY")
-
-api_results = ipdata_db.searchDB("127.9.9.2", our_config)
+our_config = ipdata_db.config("127.0.0.1", 27017, "", "", "fail2ban_gui", "ip_data", "f69b1b9f98221cac40792d3521b92b4a67d1c340d53ad8a085b2511b")
+api_results = ipdata_db.retrieve("201.239.58.78", our_config)
 print(api_results)
 
-
-
-# ip_data structure:
-# IP Address, Last Ban, Ban Count, City, Region, Country, Organization, Flag, Threat
-
-what = raw_input('Press ENTER to exit')
+what = input('Press ENTER to exit')
 #try:
 #	mongoClient = pymongo.MongoClient("mongodb://localhost:27017/")
 
