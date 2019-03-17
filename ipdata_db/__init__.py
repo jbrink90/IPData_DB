@@ -2,8 +2,16 @@ import ipdata
 
 titties = "tits"
 
-def search(config):
-	print("Searching with config: " + str(config.API_KEY))
+def searchDB(MongoConfig, IP):
+	print("Searching local MongoDB")
+
+#mongodb stuff
+	
+def searchAPI(config, IP):
+	print("Searching API with config: " + str(config.API_KEY))
+
+def retrieve(config, IP):
+	print("Searching DB, then API, returning the IP record.")
 
 class config():
 	MONGO_URL = ""
