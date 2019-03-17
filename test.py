@@ -1,13 +1,11 @@
 #!/usr/bin/python3
-#import ipdata_db
 import ipdata_db
 
-ipdata_config = ipdata_db.config()
-ipdata_config.setup("127.0.0.1", 27017, "", "", "SOMEKEY")
+our_config = ipdata_db.config()
+our_config.setup("127.0.0.1", 27017, "user", "pass", "SOMEKEY")
 
-ipdaa_db.searchDB("127.9.9.2")
-ipdata_db.searchAPI(ipdata_config, "192.168.1.1")
-
+api_results = ipdata_db.searchDB("127.9.9.2", our_config)
+print(api_results)
 
 
 
@@ -17,4 +15,4 @@ ipdata_db.searchAPI(ipdata_config, "192.168.1.1")
 what = raw_input('Press ENTER to exit')
 #try:
 #	mongoClient = pymongo.MongoClient("mongodb://localhost:27017/")
-	
+

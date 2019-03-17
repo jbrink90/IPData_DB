@@ -1,19 +1,34 @@
 import ipdata
+import pymongo
 
-titties = "tits"
+def searchDB(IP, configuration):
+	url = str(configuration.MONGO_URL)
+	port = str(configuration.MONGO_PORT)
+	user = str(configuration.MONGO_USER)
+	passwd = str(configuration.MONGO_PASS)
 
-def searchDB(MongoConfig, IP):
-	print("Searching local MongoDB")
+	login_string = user + ":" + passwd + "@"
 
-#mongodb stuff
-	
-def searchAPI(config, IP):
-	print("Searching API with config: " + str(config.API_KEY))
+	if (len(login_string) == 2):
+		login_string = ""
 
-def retrieve(config, IP):
+	try:
+		mongoClient = pymongo.MongoClient("mongodb://" + login_string + url + ":" + port+ "/")
+		print("Mongo client connected!")
+	except ConnectionFailure:
+		print("ConnectionFailure!")
+	except:
+		raise Exception("Could not connect to " + url)
+		
+	mongoClient.close()
+
+def searchAPI(IP, configuration):
+	return ("Searching API with config: " + str(configuration.API_KEY))
+
+def retrieve(IP, configuration):
 	print("Searching DB, then API, returning the IP record.")
 
-class config():
+class config:
 	MONGO_URL = ""
 	MONGO_PORT = ""
 	MONGO_USER = ""
