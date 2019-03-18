@@ -6,4 +6,5 @@ IPData_DB.egg-info/dependency_links.txt
 IPData_DB.egg-info/requires.txt
 IPData_DB.egg-info/top_level.txt
 ipdata_db/__init__.py
-ipdata_db/main.py
+ipdata_db/config.py
+ipdata_db/ipaddr.py
