@@ -23,31 +23,31 @@ def searchDB(IP, configuration):
 			mongo_db.authenticate(user, passwd)
 			
 		if (collection not in mongo_db.list_collection_names()):
-			print("Could not find " + collection + " in " + db)
+			debug("Could not find " + collection + " in " + db)
 			return False
 		
 		collection_ips = mongo_db[collection]
-		data_count = collection_ips.count({"ip_addr":IP})
+		data_count = collection_ips.count({"_id":IP})
 		
 		if (data_count < 1):
-			print(IP + " not found in IPDB")
+			debug(IP + " not found in IPDB")
 			return False
 		if (data_count > 1):
-			print(str(data_count) + " records found. Only returning one.")
+			debug(str(data_count) + " records found. Only returning one.")
 		
-		data_found = collection_ips.find_one({"ip_addr":IP})
+		data_found = collection_ips.find_one({"_id":IP})
 		
 		mongoClient.close()
 		return data_found
 		
 	except ConnectionFailure:
-		print("ConnectionFailure!")
+		debug("ConnectionFailure!")
 		return False
 	except OperationFailure:
-		print("Authentication failed.")
+		debug("Authentication failed.")
 		return False
 	except:
-		raise Exception("Could not connect to " + url)
+		debug("Could not connect to " + url)
 		return False
 
 def searchAPI(IP, configuration):
@@ -55,13 +55,13 @@ def searchAPI(IP, configuration):
 		request_url = "https://api.ipdata.co/"+str(IP)+"?api-key="+configuration.API_KEY
 		api_request = requests.get(request_url)
 	except Timeout:
-		print("Timeout reached while making API call")
+		debug("Timeout reached while making API call")
 		return False
 	except ConnectionError:
-		print("ConnectionError thrown while making API call")
+		debug("ConnectionError thrown while making API call")
 		return False
 	except:
-		print("Other error while making API call")
+		debug("Other error while making API call")
 		return False
 	
 	if ('application/json' in str(api_request.headers.get('content-type'))):
@@ -72,24 +72,24 @@ def searchAPI(IP, configuration):
 			mongo_db.authenticate(str(configuration.MONGO_USER), str(configuration.MONGO_PASS))
 		
 		collection_ips = mongo_db[str(configuration.MONGO_COLLECTION)]
-		data_count = collection_ips.count({"ip_addr":str(IP)})
+		data_count = collection_ips.count({"_id":str(IP)})
 		
 		if (data_count < 1):
 			# Add it to IPDB
 			row = {
-				"ip_addr": IP,
+				"_id": IP,
 				"ipdata": api_request.json()
 			}
 			try:
 				collection_ips.insert_one(row)
 			except ConnectionFailure:
-				print("Connection failure while storing IP data in IPDB.")
+				debug("Connection failure while storing IP data in IPDB.")
 				return False
 			except OperationFailure:
-				print("Authentication failure while storing IP data in IPDDB.")
+				debug("Authentication failure while storing IP data in IPDDB.")
 				return False
 			except:
-				raise Exception("Could not connect to MongoDB")
+				debug("Could not connect to MongoDB")
 				return False
 			
 		return api_request.json()
@@ -100,7 +100,7 @@ def searchAPI(IP, configuration):
 		
 
 def retrieve(IP, configuration):
-	print("Searching DB, then API, returning the IP record.")
+	info("Searching DB, then API, returning the IP record.")
 	
 	url = str(configuration.MONGO_URL)
 	port = str(configuration.MONGO_PORT)
@@ -119,34 +119,35 @@ def retrieve(IP, configuration):
 			mongo_db.authenticate(user, passwd)
 		
 		collection_ips = mongo_db[collection]
-		data_count = collection_ips.count({"ip_addr":IP})
+		data_count = collection_ips.count({"_id":IP})
 		data_found = False
 		
 		
 		
 		if (data_count < 1):
-			print(IP + " not found in IPDB")
+			debug(IP + " not found in IPDB")
 			# search the API
 			data_found = searchAPI(IP, configuration)
 			
 		elif (data_count > 1):
-			print(str(data_count) + " records found. Only returning one.")
-			data_found = collection_ips.find_one({"ip_addr":IP})
+			debug(str(data_count) + " records found. Only returning one.")
+			data_found = collection_ips.find_one({"_id":IP})
 		
 		elif (data_count == 1):
-			data_found = collection_ips.find_one({"ip_addr":IP})
+			info("(retrieve) successful)
+			data_found = collection_ips.find_one({"_id":IP})
 		
 		mongoClient.close()
 		return data_found
 		
 	except ConnectionFailure:
-		print("ConnectionFailure!")
+		debug("ConnectionFailure!")
 		return False
 	except OperationFailure:
-		print("Authentication failed.")
+		debug("Authentication failed.")
 		return False
 	except:
-		raise Exception("Could not connect to " + url)
+		debug("Could not connect to " + url)
 		return False
 
 class config:
@@ -157,8 +158,9 @@ class config:
 	MONGO_DB = ""
 	MONGO_COLLECTION = ""
 	API_KEY = ""
+	DEBUG = ""
 
-	def __init__(self, mongo_url, mongo_port, mongo_user, mongo_passwd, mongo_db, mongo_collection, ipdata_api_key):
+	def __init__(self, mongo_url, mongo_port, mongo_user, mongo_passwd, mongo_db, mongo_collection, ipdata_api_key, debug=False):
 		self.MONGO_URL = mongo_url
 		self.MONGO_PORT = mongo_port
 		self.MONGO_USER = mongo_user
@@ -166,3 +168,4 @@ class config:
 		self.MONGO_DB = mongo_db
 		self.MONGO_COLLECTION = mongo_collection
 		self.API_KEY = ipdata_api_key
+		self.DEBUG = debug
