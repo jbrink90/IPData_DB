@@ -4,7 +4,7 @@ A Python package used to store a local cache of IP address entries in a Mongo da
 
 ### Using IPData_DB
 #### Downloading and installing the package
-From your Python project directory, execute: `wget https://github.com/TheConsciousness/IPData_DB/archive/master.zip` Once downloaded, unzip the package: `unzip master.zip` Once 
+From your Python project directory, execute: `wget https://github.com/jbrink90/IPData_DB/archive/master.zip` Once downloaded, unzip the package: `unzip master.zip` Once 
 unzipped, we'll copy the package folder we need into our project directory: `cp IPData_DB-master/ipdata_db/ -r .` And then delete the leftover GitHub zip and folder: `rm -rf 
 IPData_DB-master/ master.zip`
 
